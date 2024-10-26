@@ -12,6 +12,7 @@ ACharacterBase::ACharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 	AbilitySystemComponent = CreateDefaultSubobject<UCharacterAbilitySystemComponent>("AbilitySystemComp");
 	AttributeSet = CreateDefaultSubobject<UBaseAttributeSet>("AttributeSetComp");
+
 }
 
 // Called when the game starts or when spawned
@@ -33,5 +34,6 @@ void ACharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	AbilitySystemComponent -> ApplyDefeaultAbilityEffects();
 }
 

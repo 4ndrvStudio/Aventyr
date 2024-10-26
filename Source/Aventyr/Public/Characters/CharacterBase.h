@@ -14,10 +14,10 @@ class AVENTYR_API ACharacterBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACharacterBase();
-
+	
 	//Abilities 
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
-	class UAbilitySystemComponent* AbilitySystemComponent;
+	class UCharacterAbilitySystemComponent* AbilitySystemComponent;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Abilities|Attributes")
     class UBaseAttributeSet* AttributeSet;
@@ -32,5 +32,5 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 };

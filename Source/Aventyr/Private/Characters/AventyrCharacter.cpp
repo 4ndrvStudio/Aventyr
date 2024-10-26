@@ -3,3 +3,9 @@
 
 #include "Characters/AventyrCharacter.h"
 
+#include "Characters/Equipment.h"
+
+AAventyrCharacter::AAventyrCharacter()
+{
+	Equipment  = CreateDefaultSubobject<UEquipment>("EquipmentComp");
+}

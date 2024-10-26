@@ -7,7 +7,6 @@
 #include "AbilitySystemComponent.h"
 #include "BaseAttributeSet.generated.h"
 
-
 //Macro for update Stats
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
 	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName)\
@@ -23,6 +22,17 @@ UCLASS()
 class AVENTYR_API UBaseAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
+	
+	void ClampData(const struct FGameplayEffectModCallbackData& Data);
+	void AdjustDefaultAttributes(const FGameplayAttribute& Attribute, float& NewValue);
+
+	UFUNCTION()
+	void AdjustAttributeForMaxChange(
+		FGameplayAttributeData& AffectedAttribute,
+		const FGameplayAttributeData& MaxAttribute,
+		float NewMaxValue,
+		const FGameplayAttribute& AffectedAttributeProperty);
+
 public:
 	UBaseAttributeSet();
 	

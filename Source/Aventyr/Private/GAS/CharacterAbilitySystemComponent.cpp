@@ -3,12 +3,22 @@
 
 #include "GAS/CharacterAbilitySystemComponent.h"
 #include "Characters/CharacterBase.h"
-
+#include "GameFramework/HUD.h"
+#include "GAS/BaseAttributeSet.h"
+#include "Interfaces/GameplayHUD.h"
 
 void UCharacterAbilitySystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	OwnerPtr = Cast<ACharacterBase>(GetOwner());
+
+	APlayerController* PlayerController = Cast<APlayerController>(OwnerPtr->GetController());
+	GameplayHUD = PlayerController ->GetHUD();
+
+	//Setup Default UI
+	HandleHealthChanged(1);
+	HandleStaminaChanged(1);
+	HandleXpChanged(1);
 }
 
 
@@ -30,4 +40,27 @@ void UCharacterAbilitySystemComponent::RemoveDefeaultAbilityEffects()
 	FGameplayEffectQuery Query;
 	Query.EffectSource = OwnerPtr;
 	RemoveActiveEffects(Query);
+}
+
+void UCharacterAbilitySystemComponent::HandleHealthChanged(float delta)
+{
+	if(!GameplayHUD || !GameplayHUD -> GetClass() -> ImplementsInterface(UGameplayHUD::StaticClass())) return;
+	float Percent = OwnerPtr -> AttributeSet->GetHealth() / OwnerPtr -> AttributeSet->GetMaxHealth();
+	IGameplayHUD::Execute_UpdateHPBar(GameplayHUD,Percent);
+}
+
+void UCharacterAbilitySystemComponent::HandleStaminaChanged(float delta)
+{
+	if(!GameplayHUD || !GameplayHUD -> GetClass() -> ImplementsInterface(UGameplayHUD::StaticClass())) return;
+	
+	float Percent = OwnerPtr -> AttributeSet->GetStamina() / OwnerPtr -> AttributeSet->GetMaxStamina();
+	IGameplayHUD::Execute_UpdateMPBar(GameplayHUD,Percent);
+	
+}
+
+void UCharacterAbilitySystemComponent::HandleXpChanged(float delta)
+{
+	if(!GameplayHUD || !GameplayHUD -> GetClass() -> ImplementsInterface(UGameplayHUD::StaticClass())) return;
+	float Percent = OwnerPtr -> AttributeSet->GetExp() / OwnerPtr -> AttributeSet->GetMaxExp();
+	IGameplayHUD::Execute_UpdateExpBar(GameplayHUD,Percent);
 }
