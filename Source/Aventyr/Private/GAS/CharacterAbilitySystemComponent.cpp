@@ -16,9 +16,12 @@ void UCharacterAbilitySystemComponent::BeginPlay()
 	GameplayHUD = PlayerController ->GetHUD();
 
 	//Setup Default UI
-	HandleHealthChanged(1);
-	HandleStaminaChanged(1);
-	HandleXpChanged(1);
+	HandleHealthChanged();
+	HandleStaminaChanged();
+	HandleXpChanged();
+
+	//ApplyDefaultAbilities
+	ApplyDefeaultAbilities();
 }
 
 
@@ -35,6 +38,7 @@ void UCharacterAbilitySystemComponent::ApplyDefeaultAbilityEffects()
 	}
 }
 
+
 void UCharacterAbilitySystemComponent::RemoveDefeaultAbilityEffects()
 {
 	FGameplayEffectQuery Query;
@@ -42,14 +46,24 @@ void UCharacterAbilitySystemComponent::RemoveDefeaultAbilityEffects()
 	RemoveActiveEffects(Query);
 }
 
-void UCharacterAbilitySystemComponent::HandleHealthChanged(float delta)
+void UCharacterAbilitySystemComponent::ApplyDefeaultAbilities()
+{
+	//Apply normal Attack
+	for(TSubclassOf<UGameplayAbility> NormalAbility : NormalAttackAbilities)
+	{
+		FGameplayAbilitySpecHandle NormalAbilitySpecHandle = OwnerPtr-> AbilitySystemComponent -> GiveAbility(FGameplayAbilitySpec(NormalAbility,Level,INDEX_NONE,this));
+		NormalAttackAbilitiesSpecHanlde.Add(NormalAbilitySpecHandle);
+	}
+}
+
+void UCharacterAbilitySystemComponent::HandleHealthChanged()
 {
 	if(!GameplayHUD || !GameplayHUD -> GetClass() -> ImplementsInterface(UGameplayHUD::StaticClass())) return;
 	float Percent = OwnerPtr -> AttributeSet->GetHealth() / OwnerPtr -> AttributeSet->GetMaxHealth();
 	IGameplayHUD::Execute_UpdateHPBar(GameplayHUD,Percent);
 }
 
-void UCharacterAbilitySystemComponent::HandleStaminaChanged(float delta)
+void UCharacterAbilitySystemComponent::HandleStaminaChanged()
 {
 	if(!GameplayHUD || !GameplayHUD -> GetClass() -> ImplementsInterface(UGameplayHUD::StaticClass())) return;
 	
@@ -58,7 +72,7 @@ void UCharacterAbilitySystemComponent::HandleStaminaChanged(float delta)
 	
 }
 
-void UCharacterAbilitySystemComponent::HandleXpChanged(float delta)
+void UCharacterAbilitySystemComponent::HandleXpChanged()
 {
 	if(!GameplayHUD || !GameplayHUD -> GetClass() -> ImplementsInterface(UGameplayHUD::StaticClass())) return;
 	float Percent = OwnerPtr -> AttributeSet->GetExp() / OwnerPtr -> AttributeSet->GetMaxExp();

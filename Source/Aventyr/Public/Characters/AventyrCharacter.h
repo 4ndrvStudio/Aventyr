@@ -14,9 +14,17 @@ class AVENTYR_API AAventyrCharacter : public ACharacterBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	class UEquipment* Equipment;
+	
 
 protected:
 	AAventyrCharacter();
+
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UEquipmentComponent* EquipmentComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UCombatComponent* CombatComponent;
+	
 };

@@ -32,19 +32,29 @@ public:
 	//Default Effect
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void ApplyDefeaultAbilityEffects();
-
+	
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void RemoveDefeaultAbilityEffects();
+
+	//Default normal Attack
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void ApplyDefeaultAbilities();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly,Category = "Abilities")
+	TArray<TSubclassOf<class UGameplayAbility>> NormalAttackAbilities;
+
+	UPROPERTY(BlueprintReadOnly ,Category = "Abilities")
+	TArray<FGameplayAbilitySpecHandle> NormalAttackAbilitiesSpecHanlde;
 	
 	//Handle Stats Change
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void HandleHealthChanged(float delta);
+	void HandleHealthChanged();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void HandleStaminaChanged(float delta);
+	void HandleStaminaChanged();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void HandleXpChanged(float delta);
+	void HandleXpChanged();
 
 	
 protected:

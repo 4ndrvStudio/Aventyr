@@ -4,7 +4,8 @@
 #include "GAS/BaseAttributeSet.h"
 #include "GameplayEffect.h"
 #include "GameplayEffectExtension.h"
-
+#include "Characters/CharacterBase.h"
+#include "GAS/CharacterAbilitySystemComponent.h"
 
 
 UBaseAttributeSet::UBaseAttributeSet()
@@ -31,19 +32,30 @@ void UBaseAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 
 void UBaseAttributeSet::ClampData(const struct FGameplayEffectModCallbackData& Data)
 {
+	ACharacterBase* CharacterBase = Cast<ACharacterBase>(GetOwningActor());
+	
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
+
+		if(CharacterBase)
+			CharacterBase -> AbilitySystemComponent -> HandleHealthChanged();
 	}
 	
 	if(Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
 		SetStamina(FMath::Clamp(GetStamina(), 0.0f, GetMaxStamina()));
+
+		if(CharacterBase)
+			CharacterBase -> AbilitySystemComponent -> HandleStaminaChanged();
 	}
 
 	if(Data.EvaluatedData.Attribute == GetExpAttribute())
 	{
 		SetExp(FMath::Clamp(GetExp(), 0.0f, GetMaxExp()));
+
+		if(CharacterBase)
+			CharacterBase -> AbilitySystemComponent -> HandleXpChanged();
 	}
 }
 
