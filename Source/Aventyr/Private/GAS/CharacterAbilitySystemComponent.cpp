@@ -13,12 +13,16 @@ void UCharacterAbilitySystemComponent::BeginPlay()
 	OwnerPtr = Cast<ACharacterBase>(GetOwner());
 
 	APlayerController* PlayerController = Cast<APlayerController>(OwnerPtr->GetController());
-	GameplayHUD = PlayerController ->GetHUD();
+	if (PlayerController)
+	{
+		// Get the HUD associated with the player
+		GameplayHUD = PlayerController->GetHUD();
 
-	//Setup Default UI
-	HandleHealthChanged();
-	HandleStaminaChanged();
-	HandleXpChanged();
+		// Setup Default UI
+		HandleHealthChanged();
+		HandleStaminaChanged();
+		HandleXpChanged();
+	}
 
 	//ApplyDefaultAbilities
 	ApplyDefeaultAbilities();
